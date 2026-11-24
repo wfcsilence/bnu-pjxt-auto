@@ -14,6 +14,18 @@
 
 ---
 
+## 怎么拿到代码
+
+```bash
+git clone https://github.com/wfcsilence/bnu-pjxt-auto.git
+```
+
+不想装 git：仓库页面右上角 **Code → Download ZIP**，解压即可。
+
+> ZIP 下载会丢掉 `.command` 的可执行位（Windows 打 zip 的老问题），macOS 用户解压后要先 `chmod +x`，见下文 L2 / macOS 一节。用 `git clone` 则不会丢。
+
+---
+
 ## 目录结构
 
 ```
