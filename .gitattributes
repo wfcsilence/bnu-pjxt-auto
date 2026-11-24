@@ -1,0 +1,10 @@
+* text=auto
+
+# Windows 批处理必须是 CRLF，否则 cmd 解析异常
+*.bat   text eol=crlf
+# macOS 双击脚本必须是 LF，否则报 "bad interpreter"
+*.command text eol=lf
+*.py    text eol=lf
+*.md    text eol=lf
+*.json  text eol=lf
+*.html  text eol=lf

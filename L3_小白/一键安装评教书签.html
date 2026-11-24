@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>一键评教 · 书签安装</title>
+<style>
+  :root{
+    --bg:#f5f7fa; --card:#ffffff; --ink:#1f2933; --sub:#5b6770;
+    --brand:#2563eb; --brand-soft:#eff4ff; --line:#e2e8f0; --ok:#0f9d58;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:40px 20px;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;line-height:1.7}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:26px;margin:0 0 6px}
+  .lead{color:var(--sub);margin:0 0 28px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:24px 26px;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .card>h3{margin:0 0 16px;font-size:17px}
+  .step{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
+  .step:last-child{margin-bottom:0}
+  .num{flex:0 0 28px;height:28px;border-radius:50%;background:var(--brand);
+    color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .step h3{margin:2px 0 4px;font-size:16px}
+  .step p{margin:0;color:var(--sub);font-size:14px}
+  .bookmark{display:inline-block;background:var(--brand-soft);color:var(--brand);
+    border:2px dashed var(--brand);border-radius:10px;padding:12px 22px;
+    font-size:16px;font-weight:700;text-decoration:none;cursor:grab;margin:6px 0}
+  .bookmark:active{cursor:grabbing}
+  .bookmark.stale{opacity:.45;border-color:#cbd5e1;color:#94a3b8;background:#f1f5f9;
+    cursor:not-allowed;pointer-events:none}
+  .warn{background:#fff8e6;border:1px solid #f5d98a;border-radius:10px;padding:14px 16px;font-size:14px;color:#7a5b00}
+  .ok{color:var(--ok);font-weight:600}
+  .bar{background:#eef1f5;border-radius:8px;padding:10px 12px;font-size:12px;color:#475569;
+    margin-top:8px;max-height:120px;overflow:auto;white-space:pre-wrap;word-break:break-all;
+    font-family:ui-monospace,Consolas,"Courier New",monospace;line-height:1.5;user-select:text}
+  .field{margin-bottom:18px}
+  .field>label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+  .tip{font-size:12.5px;color:var(--sub);margin-top:5px;line-height:1.6}
+  input[type=text]{width:100%;border:1px solid var(--line);border-radius:8px;
+    padding:9px 11px;font-size:14px;font-family:inherit;color:var(--ink);background:#fff}
+  input[type=text]:focus{outline:2px solid var(--brand-soft);border-color:var(--brand)}
+  .picks{display:flex;gap:9px;flex-wrap:wrap}
+  .pick{position:relative;cursor:pointer}
+  .pick input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+  .pick span{display:inline-block;border:1px solid var(--line);background:#fff;border-radius:999px;
+    padding:7px 20px;font-size:14px;color:var(--ink);transition:.15s}
+  .pick input:checked+span{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:700}
+  .pick:hover span{border-color:var(--brand)}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .btn{background:var(--brand);color:#fff;border:0;border-radius:9px;padding:10px 22px;
+    font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+  .btn:hover{filter:brightness(1.06)}
+  .btn.ghost{background:#fff;color:var(--brand);border:1px solid var(--brand)}
+  .hint{font-size:13.5px;margin-top:12px;min-height:20px}
+  .hint.ok{color:var(--ok);font-weight:600}
+  .hint.stale{color:#b45309;font-weight:600}
+  .chk{display:flex;gap:9px;align-items:flex-start;font-size:14px;font-weight:600;cursor:pointer}
+  .chk input{margin:5px 0 0}
+  .sum{font-size:13px;color:var(--sub);margin:4px 0 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>一键评教 · 书签安装</h1>
+  <p class="lead">先设定好「选哪一项、三个空分别写什么」，再生成书签拖进书签栏。以后每门课点一下，自动填好并提交。</p>
+
+  <div class="card">
+    <h3>第一步：显示书签栏</h3>
+    <div class="step">
+      <div class="num">1</div>
+      <div><h3>按 Ctrl + Shift + B</h3>
+      <p>macOS 是 Cmd + Shift + B。浏览器顶部会出现一条书签栏（已经显示了就跳过这步）。</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>第二步：设定要填的内容</h3>
+
+    <div class="field">
+      <label>选择题选哪一项</label>
+      <div class="picks">
+        <label class="pick"><input type="radio" name="pk" value="好" checked><span>好</span></label>
+        <label class="pick"><input type="radio" name="pk" value="较好"><span>较好</span></label>
+        <label class="pick"><input type="radio" name="pk" value="一般"><span>一般</span></label>
+        <label class="pick"><input type="radio" name="pk" value="较差"><span>较差</span></label>
+        <label class="pick"><input type="radio" name="pk" value="差"><span>差</span></label>
+      </div>
+      <div class="tip">评教系统固定这五个选项，每道题都选同一个。默认「好」。</div>
+    </div>
+
+    <div class="field">
+      <label for="f1">填空 1：需要改进的地方？</label>
+      <input id="f1" type="text" value="无" autocomplete="off">
+      <div class="tip">不想写就留空。多数人填「无」。</div>
+    </div>
+
+    <div class="field">
+      <label for="f2">填空 2：突出优点是什么？</label>
+      <input id="f2" type="text" value="无" autocomplete="off">
+      <div class="tip">同上，留空也可以。</div>
+    </div>
+
+    <div class="field">
+      <label for="f3">填空 3：打多少分？（满分 100 分）</label>
+      <input id="f3" type="text" inputmode="numeric" value="90" autocomplete="off">
+      <div class="tip">填 0–100 的数字，默认 90。</div>
+    </div>
+
+    <div class="field">
+      <label class="chk" for="as"><input type="checkbox" id="as" checked> 填好后自动点「提交」</label>
+      <div class="tip" style="margin-left:26px">取消勾选就只填写、不提交，你检查完自己点提交。第一次用建议先取消勾选试一门。</div>
+    </div>
+
+    <div class="row">
+      <button class="btn" id="gen" type="button">生成书签</button>
+      <button class="btn ghost" id="reset" type="button">恢复默认</button>
+    </div>
+    <div class="hint" id="msg"></div>
+  </div>
+
+  <div class="card">
+    <h3>第三步：把书签拖到书签栏</h3>
+    <a class="bookmark" id="bk">📘 一键评教</a>
+    <p class="sum" id="sum"></p>
+    <p style="color:var(--sub);font-size:14px;margin:6px 0 0">按住上面这个蓝色按钮，拖到浏览器顶部的书签栏里松手。</p>
+    <div class="warn">
+      拖不动就这样做：书签栏空白处<b>右键 → 添加页面/添加书签</b>，名称填「一键评教」，网址粘贴下面这一整行：
+      <div class="bar" id="code"></div>
+      <button class="btn ghost" id="copy" type="button" style="margin-top:10px;padding:6px 14px;font-size:13px">复制这段代码</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>第四步：以后怎么用（每门课重复）</h3>
+    <div class="step">
+      <div class="num">1</div>
+      <div><h3>正常登录评教系统</h3><p>打开学校评教页面，登录，进入待评教列表。</p></div>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <div><h3>点进某一门课的「立即评价」</h3><p>停在填写表单的页面。</p></div>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <div><h3>点一下书签栏的「一键评教」</h3><p class="ok">自动填好并提交，页面会回到列表。</p></div>
+    </div>
+    <div class="step">
+      <div class="num">4</div>
+      <div><h3>回到第 2 步，处理下一门</h3><p>直到「待评教」里没有课程为止。</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>常见问题</h3>
+    <p style="font-size:14px;color:var(--sub);margin:0">
+      <b>点书签没反应？</b> 确认你停在课程填写页（能看到题目和「提交」按钮），不是在列表页。<br>
+      <b>提示没找到提交按钮？</b> 页面可能没加载完，等两秒再点一次。<br>
+      <b>改完设置忘了重新生成？</b> 按钮会变灰、拖不动，点一下「生成书签」就好，避免用旧内容提交。<br>
+      <b>会填错吗？</b> 它只按你上面设定的内容填：选择题全选「<span id="faqPk">好</span>」，三个空依次填你写的内容。一旦提交无法修改，不确定就先取消自动提交试一门。<br>
+      <b>换了浏览器 / 换了电脑？</b> 把这个网页打开，重新设定、重新拖一次书签（设定不会跟着书签迁移）。
+    </p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var D_PK = '好', D_FILLS = ['无', '无', '90'], D_AS = true;
+
+  function $(id) { return document.getElementById(id); }
+  var as = $('as'), bk = $('bk'), codeEl = $('code'), msg = $('msg'), sum = $('sum'), faqPk = $('faqPk');
+  var fillIds = ['f1', 'f2', 'f3'];
+
+  // 把任意文本安全地变成 JS 单引号字符串字面量（只输出单引号，避免破坏 HTML 属性）
+  function jsStr(s) {
+    return "'" + String(s)
+      .replace(/\\/g, '\\\\')
+      .replace(/'/g, "\\'")
+      .replace(/\r/g, '')
+      .replace(/\n/g, '\\n')
+      .replace(/\u2028/g, '\\u2028')
+      .replace(/\u2029/g, '\\u2029') + "'";
+  }
+
+  function valsJs(arr) {
+    return '[' + arr.map(jsStr).join(',') + ']';
+  }
+
+  function readCfg() {
+    var el = document.querySelector('input[name="pk"]:checked');
+    var vals = fillIds.map(function (id) { return $(id).value.trim(); });
+    return { pk: el ? el.value : D_PK, vals: vals, as: as.checked };
+  }
+
+  function buildCode(c) {
+    var L = [];
+    L.push('(function(){');
+    L.push('window.confirm=function(){return true;};');
+    L.push('var PK=' + jsStr(c.pk) + ',VS=' + valsJs(c.vals) + ',AS=' + (c.as ? 1 : 0) + ';');
+    L.push("var rs=[].slice.call(document.querySelectorAll('input[type=radio]'));");
+    L.push("if(!rs.length){alert('当前页面不是评教填写页，请先点进某门课程的填写页面');return;}");
+    // 选项文字可能挂在父节点、<label> 或 value 上，三处都认一下
+    L.push('function mt(e,k){');
+    L.push("var a=((e.parentElement&&e.parentElement.innerText)||'').replace(/\\s/g,'');");
+    L.push('if(a===k)return 1;');
+    L.push("var l=e.closest?e.closest('label'):null;");
+    L.push("if(l&&((l.innerText||'').replace(/\\s/g,''))===k)return 1;");
+    L.push('return e.value===k?1:0;');
+    L.push('}');
+    // 同一 name 视为同一道题；name 不全或异常时退回「每 5 个一组」
+    L.push('var gs=[],nm={},ord=[];');
+    L.push('rs.forEach(function(r){var k=r.name;if(!k)return;if(!nm[k]){nm[k]=[];ord.push(k);}nm[k].push(r);});');
+    L.push('var use=rs.length===rs.filter(function(r){return r.name;}).length;');
+    L.push('if(use)for(var q=0;q<ord.length;q++){if(ord.length<2||nm[ord[q]].length<2){use=0;break;}}');
+    L.push('if(use){ord.forEach(function(k){gs.push(nm[k]);});}');
+    L.push('else{for(var i=0;i<rs.length;i+=5)gs.push(rs.slice(i,i+5));}');
+    L.push('var ok=0;');
+    L.push('gs.forEach(function(g){');
+    L.push('var h=null;');
+    L.push('if(PK)for(var j=0;j<g.length;j++){if(mt(g[j],PK)){h=g[j];break;}}');
+    L.push('if(!h)h=g[0];');
+    L.push('if(!h)return;');
+    L.push('if(!h.checked)h.click();');
+    L.push('if(h.checked)ok++;');
+    L.push('});');
+    L.push("var ts=[].slice.call(document.querySelectorAll('textarea'));");
+    L.push("var st=Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set;");
+    L.push("ts.forEach(function(t,j){st.call(t,j<VS.length?VS[j]:'');t.dispatchEvent(new Event('input',{bubbles:true}));t.dispatchEvent(new Event('change',{bubbles:true}));});");
+    L.push("var m='已填写 '+ok+'/'+gs.length+' 题（选「'+PK+'」）';");
+    L.push("if(!AS){alert(m+'，三个空已按设定填写。\\n请自己检查后手动点「提交」。');return;}");
+    L.push("if(!ok){alert(m+'\\n一道题都没选上，已停止提交。请检查页面上的选项文字是否有「'+PK+'」。');return;}");
+    L.push("var bt=[].slice.call(document.querySelectorAll('a,button')).filter(function(e){return ((e.innerText||'').replace(/\\s/g,''))==='提交';})[0];");
+    L.push("if(!bt){alert(m+'，但没找到「提交」按钮，请手动提交。');return;}");
+    L.push('bt.click();');
+    L.push("alert(m+'，已提交。\\n请返回列表，进入下一门课程。');");
+    L.push('})();');
+    return L.join('');
+  }
+
+  function scoreWarn(v) {
+    if (v === '') return '第 3 个空留空了，分数通常要填 0–100 的数字。';
+    if (!/^\d+(\.\d+)?$/.test(v)) return '第 3 个空填的是「' + v + '」，不是纯数字，确认这里确实填分数吗？';
+    var n = parseFloat(v);
+    if (n < 0 || n > 100) return '第 3 个空填的是 ' + v + '，超出 0–100，确认无误再提交。';
+    return '';
+  }
+
+  function apply(quiet) {
+    var c = readCfg();
+    var url = 'javascript:' + buildCode(c);
+    bk.setAttribute('href', url);
+    bk.classList.remove('stale');
+    codeEl.textContent = url;
+
+    var shown = c.vals.map(function (v) { return v === '' ? '（空）' : v; });
+    var desc = '当前设定：选项「' + c.pk + '」 · 填空 ' + shown.join(' / ') + ' · ' +
+      (c.as ? '自动提交' : '只填不提交');
+    sum.textContent = desc;
+    faqPk.textContent = c.pk;
+
+    var w = scoreWarn(c.vals[2]);
+    if (!quiet) {
+      if (w) {
+        msg.className = 'hint stale';
+        msg.textContent = '已生成，但这里要留意：' + w;
+      } else {
+        msg.className = 'hint ok';
+        msg.textContent = '已生成，现在把它拖到书签栏。' + desc;
+      }
+    }
+  }
+
+  function markStale() {
+    bk.removeAttribute('href');
+    bk.classList.add('stale');
+    msg.className = 'hint stale';
+    msg.textContent = '设置改过了，先点「生成书签」，再拖到书签栏。';
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="pk"]'), function (el) {
+    el.addEventListener('change', markStale);
+  });
+  fillIds.forEach(function (id) { $(id).addEventListener('input', markStale); });
+  as.addEventListener('change', markStale);
+
+  $('gen').addEventListener('click', function () { apply(false); });
+
+  $('reset').addEventListener('click', function () {
+    var first = document.querySelector('input[name="pk"][value="' + D_PK + '"]');
+    if (first) first.checked = true;
+    fillIds.forEach(function (id, i) { $(id).value = D_FILLS[i]; });
+    as.checked = D_AS;
+    apply(false);
+  });
+
+  $('copy').addEventListener('click', function () {
+    var t = codeEl.textContent;
+    function done(src) {
+      msg.className = src ? 'hint ok' : 'hint stale';
+      msg.textContent = src ? '代码已复制，粘贴到书签的网址里即可。' : '复制失败，请手动全选那段代码复制。';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).then(function () { done(true); }, function () { done(false); });
+      return;
+    }
+    try {
+      var r = document.createRange();
+      r.selectNodeContents(codeEl);
+      var s = window.getSelection();
+      s.removeAllRanges();
+      s.addRange(r);
+      done(document.execCommand('copy'));
+    } catch (e) { done(false); }
+  });
+
+  apply(true);
+})();
+</script>
+</body>
+</html>

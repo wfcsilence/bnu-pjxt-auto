@@ -1,0 +1,26 @@
+{
+  "name": "北师大研究生评教",
+  "site_key": "ss.bnu.edu.cn",
+  "list_url": "https://ss.bnu.edu.cn/www/dd/vue/spa/pjxt#/xspj?type=qmpj",
+  "port": 9222,
+  "max_iterations": 30,
+  "wait_after_click_sec": 2.5,
+  "wait_after_submit_sec": 3.0,
+  "wait_after_nav_sec": 2.0,
+  "answer": {
+    "pick": "好",
+    "pick_options": ["好", "较好", "一般", "较差", "差"],
+    "fills": [
+      {"label": "需要改进的地方？", "default": "无"},
+      {"label": "突出优点是什么？", "default": "无"},
+      {"label": "打多少分？（满分100分）", "default": "90"}
+    ]
+  },
+  "js": {
+    "list": "(function(){var es=[].slice.call(document.querySelectorAll('div')).filter(function(e){return e.children.length===0&&e.innerText.replace(/\\s/g,'')==='立即评价';});var ns=es.map(function(e){var c=e,d=0;while(c&&c.innerText.indexOf('教师姓名')<0&&d<10){c=c.parentElement;d++;}var m=(c?c.innerText:'').match(/教师姓名[：:]\\s*(\\S+)/);return m?m[1]:'?';});return {n:es.length,names:ns};})()",
+    "click": "(function(){var es=[].slice.call(document.querySelectorAll('div')).filter(function(e){return e.children.length===0&&e.innerText.replace(/\\s/g,'')==='立即评价';});var i=__INDEX__;if(es[i])es[i].click();return {clicked:!!es[i]};})()",
+    "check": "(function(){return {forms:document.querySelectorAll('input[type=radio]').length};})()",
+    "ready": "(function(){var b=document.body?document.body.innerText:'';var has=/(立即评价|待评教|暂无数据)/.test(b);var login=!!document.querySelector('input[type=password]')||/(统一身份认证|请输入密码|扫码登录|账号登录)/.test(b)||/login|authserver/i.test(location.href);return {url:location.href,hasList:has,login:login&&!has,title:document.title};})()",
+    "fill_submit": "(function(){window.confirm=function(){return true;};var rs=[].slice.call(document.querySelectorAll('input[type=radio]'));if(!rs.length)return {step:'no_form'};for(var i=0;i<rs.length;i+=5){var g=rs.slice(i,i+5);var gd=g.filter(function(e){return (e.parentElement&&e.parentElement.innerText||'').replace(/\\s/g,'')===__PICK__;})[0]||g[0];if(gd&&!gd.checked)gd.click();}var ts=[].slice.call(document.querySelectorAll('textarea'));var vs=__FILLS__;var st=Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype,'value').set;ts.forEach(function(t,i){st.call(t,vs[i]||'');t.dispatchEvent(new Event('input',{bubbles:true}));t.dispatchEvent(new Event('change',{bubbles:true}));});var ck=rs.filter(function(e){return e.checked;}).length;var bt=[].slice.call(document.querySelectorAll('a,button')).filter(function(e){return (e.innerText||'').replace(/\\s/g,'')==='提交';})[0];if(!bt)return {step:'no_btn'};bt.click();return {step:'clicked',checked:ck,total:rs.length};})()"
+  }
+}
