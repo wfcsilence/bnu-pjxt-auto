@@ -1,7 +1,8 @@
 * text=auto
 
-# Windows 批处理必须是 CRLF，否则 cmd 解析异常
-*.bat   text eol=crlf
+# Windows 批处理必须是 CRLF。-text 表示不做任何换行转换，
+# 让 CRLF 原样存进 blob，这样 clone / ZIP 下载拿到的都还是 CRLF。
+*.bat   -text
 # macOS 双击脚本必须是 LF，否则报 "bad interpreter"
 *.command text eol=lf
 *.py    text eol=lf
