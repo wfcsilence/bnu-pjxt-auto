@@ -36,6 +36,7 @@ git clone https://github.com/wfcsilence/bnu-pjxt-auto.git
 评教自动化分发包/
 ├── README.md                         本文件（含给 Agent 的接口说明）
 ├── AGENTS.md                         给 AI Agent 的安装/执行说明（链接即安装）
+├── LICENSE                           MIT
 │
 ├── L1_Agent用户/
 │   ├── 安装与使用.md
@@ -278,4 +279,8 @@ chrome 同理，macOS 用 ~/Library/Application Support/PJAuto/ChromeProfile
 |------|-----|
 | 需求、验收口径、页面真实行为（「评完自动刷新回首页」的循环规律）、填写内容与最终提交 | wfcsilence |
 | 引擎实现、配方 JS、三层封装、文档 | WorkBuddy Agent（模型 DeepSeek-V4.1-Flash） |
+
+## 许可
+
+MIT，见 [`LICENSE`](LICENSE)。
 
