@@ -13,7 +13,7 @@ $tmp = Join-Path $env:TEMP "pjxt-skill"
 Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
 git clone --depth 1 https://github.com/wfcsilence/bnu-pjxt-auto.git $tmp
 New-Item -ItemType Directory -Force "$env:USERPROFILE\.workbuddy\skills" | Out-Null
-Copy-Item -Recurse -Force "$tmp\L1_Agent用户\browser-form-automation" "$env:USERPROFILE\.workbuddy\skills\"
+Copy-Item -Recurse -Force "$tmp\L1_Agent*\browser-form-automation" "$env:USERPROFILE\.workbuddy\skills\"
 ```
 
 macOS / Linux：
@@ -22,8 +22,12 @@ macOS / Linux：
 tmp="$(mktemp -d)"
 git clone --depth 1 https://github.com/wfcsilence/bnu-pjxt-auto.git "$tmp/repo"
 mkdir -p ~/.workbuddy/skills
-cp -R "$tmp/repo/L1_Agent用户/browser-form-automation" ~/.workbuddy/skills/
+cp -R "$tmp/repo"/L1_Agent*/browser-form-automation ~/.workbuddy/skills/
 ```
+
+> 用 `L1_Agent*` 通配符而不是写全目录名：那个目录里有中文，命令若被存成 UTF-8 的 `.ps1` 再由 Windows PowerShell 5.1 按 GBK 读取会变乱码、路径直接失效。本段所有命令均为 ASCII，可安全写进脚本。
+>
+> 重复执行是安全的：覆盖安装，不会嵌套出第二层同名目录，也不会动到别的 skill。
 
 目标目录按工具替换：
 

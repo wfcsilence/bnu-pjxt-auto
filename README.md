@@ -1,12 +1,12 @@
 # 评教自动化分发包
 
-北师大研究生评教系统的批量填写工具。三层方案，**填的内容完全一致**，只是操作门槛不同：
+北师大研究生评教系统的批量填写工具。三层方案操作门槛不同，能填的内容一样：
 
-> 所有选择题选「好」，三个填空依次填「无」「无」「90」
+> 默认：选择题全选「好」，三个填空依次「无」「无」「90」。三层都会先跟你确认，不会拿默认值直接提交。
 
 | 你是谁 | 用哪个 | 你要做的 | 自动化程度 |
 |--------|--------|----------|-----------|
-| 会用 WorkBuddy / Codex 等 AI 工具 | `L1_Agent用户/` | 装一次 Skill，说一句「帮我评教」 | 全程自动 |
+| 会用 WorkBuddy / Codex 等 AI 工具 | `L1_Agent用户/` | 把仓库链接发给 AI 装一次，之后一句「帮我评教」 | 全程自动 |
 | 会用命令行（Windows / macOS） | `L2_命令行用户/` | 双击一个文件，确认一次 | 一键批量 |
 | 完全不懂技术 | `L3_小白/` | 设定内容 → 拖一次书签，之后每门课点一下 | 单门一键（内容可自定） |
 
@@ -113,7 +113,7 @@ git clone https://github.com/wfcsilence/bnu-pjxt-auto.git
 
 ### macOS
 
-**首次必须先赋予执行权限**（从 Windows 拷过来的文件会丢可执行位）：
+**首次必须先赋予执行权限**（Windows 拷过来、或从网页下 ZIP，都会丢可执行位；`git clone` 不会）：
 
 ```bash
 cd 你解压的目录/L2_命令行用户/macOS
@@ -278,6 +278,4 @@ chrome 同理，macOS 用 ~/Library/Application Support/PJAuto/ChromeProfile
 |------|-----|
 | 需求、验收口径、页面真实行为（「评完自动刷新回首页」的循环规律）、填写内容与最终提交 | wfcsilence |
 | 引擎实现、配方 JS、三层封装、文档 | WorkBuddy Agent（模型 DeepSeek-V4.1-Flash） |
-
-关于「加到 Contributors」：GitHub 右侧的 Contributors 只统计**提交作者邮箱绑定到 GitHub 账号**的人。WorkBuddy 与 DeepSeek 是工具与模型，不是 GitHub 账号，所以不会出现在那个列表里 —— 故以此表署名。若要它们出现在 commit 页面，需要对应的官方账号邮箱，改成 `Co-authored-by:` 即可。
 
