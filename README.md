@@ -12,6 +12,10 @@
 
 分发时**只发对应那一层文件夹**，不用整套发。
 
+> **用 AI 的人不用手动装**：把仓库链接发给 WorkBuddy / Codex，说一句
+> 「把这个仓库里的 `L1_Agent用户/browser-form-automation` 装成 skill」，
+> 它会自己 clone 到 `~/.workbuddy/skills/` 并校验。给 Agent 看的完整指令在 [`AGENTS.md`](AGENTS.md)。
+
 ---
 
 ## 怎么拿到代码
@@ -31,6 +35,7 @@ git clone https://github.com/wfcsilence/bnu-pjxt-auto.git
 ```
 评教自动化分发包/
 ├── README.md                         本文件（含给 Agent 的接口说明）
+├── AGENTS.md                         给 AI Agent 的安装/执行说明（链接即安装）
 │
 ├── L1_Agent用户/
 │   ├── 安装与使用.md
@@ -77,12 +82,22 @@ git clone https://github.com/wfcsilence/bnu-pjxt-auto.git
 
 **环境要求**：能加载 Skill 的 AI 工具（WorkBuddy / Codex 等）+ Python 3。
 
-**安装**：把 `browser-form-automation/` 整个文件夹放到
+**安装方式 A · 让 AI 自己装（推荐，不用手碰文件夹）**
+
+把仓库链接发给你用的 AI，附一句话：
+
+> 把 https://github.com/wfcsilence/bnu-pjxt-auto 里的 `L1_Agent用户/browser-form-automation` 装成 skill，装完告诉我怎么验证。
+
+它会 clone → 复制到 `~/.workbuddy/skills/browser-form-automation/` → 校验结构，你不必理解任何路径。给 Agent 的逐条指令写在 [`AGENTS.md`](AGENTS.md)，Codex 这类会读仓库根目录说明文件的工具通常不用你额外交代。
+
+**安装方式 B · 手动复制**
+
+把 `browser-form-automation/` 整个文件夹放到
 
 - WorkBuddy 用户级：`%USERPROFILE%\.workbuddy\skills\`（Windows）或 `~/.workbuddy/skills/`（macOS）
 - 或项目级：`{项目目录}\.workbuddy\skills\`
 
-重启 AI 工具后自动识别。
+两种方式都要**重启 AI 工具**才识别。确认装好：对 AI 说「你有哪些 skill」，应能看到 `browser-form-automation`。
 
 **使用**：浏览器用独立配置目录开好调试端口（见下），登录后对 AI 说「帮我评教」。**Agent 会先问你四项内容**——选择题选哪一项、三个填空分别写什么——你回答后它才动手，最后报告填写内容与提交数。
 
@@ -254,3 +269,15 @@ chrome 同理，macOS 用 ~/Library/Application Support/PJAuto/ChromeProfile
 - 只适配北师大研究生评教系统（`ss.bnu.edu.cn/www/dd/vue/spa/pjxt`）。换站点要改配方的 5 段 JS。
 - 校外通过 WebVPN 访问时 URL 被网关改写，L1/L2 的 `list_url` 会失配；**L3 书签不受影响**，因为它只在页面上下文执行。
 - 调试端口开着时，本机任何程序都能控制那个浏览器实例。用完可以关掉专用窗口。
+
+---
+
+## 协作与致谢
+
+| 角色 | 谁 |
+|------|-----|
+| 需求、验收口径、页面真实行为（「评完自动刷新回首页」的循环规律）、填写内容与最终提交 | wfcsilence |
+| 引擎实现、配方 JS、三层封装、文档 | WorkBuddy Agent（模型 DeepSeek-V4.1-Flash） |
+
+关于「加到 Contributors」：GitHub 右侧的 Contributors 只统计**提交作者邮箱绑定到 GitHub 账号**的人。WorkBuddy 与 DeepSeek 是工具与模型，不是 GitHub 账号，所以不会出现在那个列表里 —— 故以此表署名。若要它们出现在 commit 页面，需要对应的官方账号邮箱，改成 `Co-authored-by:` 即可。
+
